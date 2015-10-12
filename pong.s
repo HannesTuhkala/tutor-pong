@@ -52,3 +52,12 @@ MUXCONT:
 		
 		RTE
 
+VIDEOINIT:
+		CLR.B	$900
+		CLR.B	$901
+		CLR.B	$902
+		CLR.B	$903
+		CLR.B	$904
+		RTS
+
+
