@@ -32,7 +32,6 @@ INSTALLINTS:
 
 MUX:
 		CMP.B	#0,$10080
-		CMP.B	#0,$10082
 		
 		CLR.B	$10082
 		AND.B	#%11111000,$10080
@@ -54,23 +53,23 @@ MUXCONT:
 		
 		RTE
 TICKBALL:
-		MOVE.B	DX,D5		; flytta x-riktning till d5
-		ADD.B	D5,BPOSX	; lägg till riktningen på bollens x-position 
-		MOVE.B	DY,D5		; gör samma sak för y-postionen
+		MOVE.B	DX,D5		; move the x-direction to D5 
+		ADD.B	D5,BPOSX	; add the direction to the x-position of the ball
+		MOVE.B	DY,D5		; do the same for the y-position
 		ADD.B	D5,BPOSY	
-		CMP.B	#5,BPOSY	; kolla om bollen är för högt upp
-		BNE		NOYUBOUNCE	; om inte, hoppa över
-		MOVE.B	#4,BPOSY
-		MOVE.B	#-1,DY
-NOYUBOUNCE:
-		CMP.B	#-1,BPOSY
-		BNE		NOYLBOUNCE
-		MOVE.B	#0,BPOSY
-		MOVE.B	#1,DY
-NOYRBOUNCE:
-		CMP.B	#0,BPOSX
-		BNE		NOXRBOUNCE
-		MOVE.B	LPOSY,D5
+		CMP.B	#5,BPOSY	; check if the ball is over the top bound
+		BNE		NOYUBOUNCE	; if not, skip the following lines
+		MOVE.B	#4,BPOSY	; move the ball down one step
+		MOVE.B	#-1,DY		; reverse the direction
+NOYUBOUNCE:					; if the ball didn't bounce on the ceiling
+		CMP.B	#-1,BPOSY	; check if the ball is below the floor
+		BNE		NOYLBOUNCE	; if not, skip
+		MOVE.B	#0,BPOSY	; move the ball up to the floor
+		MOVE.B	#1,DY		; reverse the direction
+NOYLBOUNCE:					; if the ball didn't bounce on the floor
+		CMP.B	#0,BPOSX	; check if the ball is on the right wall
+		BNE		NOXRBOUNCE	; if not, skip
+		MOVE.B	LPOSY,D5	; 
 		CMP.B	BPOSY,D5
 		BLT		FAIL
 		ADD.B	#1,D5
@@ -95,6 +94,7 @@ NOXRBOUNCE:
 		MOVE.B	#1,DX
 NOXLBOUNCE:
 		RTE
+
 VIDEOINIT:
 		CLR.B	$900
 		CLR.B	$901
