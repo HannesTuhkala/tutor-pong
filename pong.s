@@ -54,12 +54,12 @@ MUXCONT:
 		
 		RTE
 TICKBALL:
-		MOVE.B	DX,D5
-		ADD.B	D5,BPOSX 
-		MOVE.B	DY,D5
-		ADD.B	D5,BPOSY
-		CMP.B	#5,BPOSY
-		BNE		NOYUBOUNCE
+		MOVE.B	DX,D5		; flytta x-riktning till d5
+		ADD.B	D5,BPOSX	; lägg till riktningen på bollens x-position 
+		MOVE.B	DY,D5		; gör samma sak för y-postionen
+		ADD.B	D5,BPOSY	
+		CMP.B	#5,BPOSY	; kolla om bollen är för högt upp
+		BNE		NOYUBOUNCE	; om inte, hoppa över
 		MOVE.B	#4,BPOSY
 		MOVE.B	#-1,DY
 NOYUBOUNCE:
