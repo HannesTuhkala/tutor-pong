@@ -69,10 +69,10 @@ NOYUBOUNCE:					; if the ball didn't bounce on the ceiling
 NOYLBOUNCE:					; if the ball didn't bounce on the floor
 		CMP.B	#0,BPOSX	; check if the ball is on the right wall
 		BNE		NOXRBOUNCE	; if not, skip
-		MOVE.B	LPOSY,D5	; 
-		CMP.B	BPOSY,D5
-		BLT		FAIL
-		ADD.B	#1,D5
+		MOVE.B	LPOSY,D5	; move the position of the left paddle to d5
+		CMP.B	BPOSY,D5	; check to see if the ball overlaps with the lower part of the paddle
+		BLT		FAIL		; if the ball position is lower, the ball is out and the game is over
+		ADD.B	#1,D5		; 
 		CMP.B	BPOSY,D5
 		BGT		FAIL
 		MOVE.B	#1,BPOSX
