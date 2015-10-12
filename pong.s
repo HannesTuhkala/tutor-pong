@@ -19,3 +19,36 @@ PIAINIT:	CLR.B	$10084			; clear CRA
 		CLR.B	$10086			; clear CRB
 		MOVE.B	$FF,$10082		; 7..0 all out
 		MOVE.B	$16,$10086		; do not allow any interrupts
+
+INSTALLINTS:
+		MOVE.L	#MUX,$68
+		MOVE.L	#TICKBALL,$74
+		
+		AND.W	#$F8FF,SR
+
+		RTS
+
+MUX:
+		CMP.B	#0,$10080
+		CMP.B	#0,$10082
+		
+		CLR.B	$10082
+		AND.B	#%11111000,$10080
+		AND.L	#$F,D2
+		OR.B	d2,$10080
+		CMP.B	#4,D2
+		BNE	ADDMUX
+		CLR.L	D2
+		JMP	MUXCONT
+ADDMUX:
+		ADD.B	#$01,D2
+MUXCONT:
+		AND.B	#%11111000,$10080
+		OR.B	D2,$10080
+		LEA	$0900,A1
+		ADD.L	D2,A1
+		
+		MOVE.B	(A1),$10082
+		
+		RTE
+
